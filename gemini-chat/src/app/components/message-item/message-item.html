@@ -1,0 +1,6 @@
+<div class="message-bubble"
+     [class.user]="message().role === 'user'"
+     [class.assistant]="message().role === 'assistant'">
+  <p>{{ message().text }}</p>
+  <span class="time">{{ message().timestamp | date:'HH:mm' }}</span>
+</div>

@@ -1,3 +1,13 @@
+#game-clickable-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+}
+
 @keyframes spinAndPulse {
   0% {
     transform: rotate(0deg) scale(1);
@@ -18,11 +28,31 @@
   transform-origin: center center;
   will-change: transform;
   cursor: pointer;
+  z-index: 10;
+  width: 200px;
+  height: 200px;
 }
 
 #game-clickable-area.active {
-  transform: scale(1.2);
-  transition: transform 0.1s;
+  transform: scale(1.05);
+  transition: transform 0.05s;
+}
+
+#cursor-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.mini-cursor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: -16px;
+  left: -16px;
+  transition: all 0.3s ease;
 }
 
 #game-shop {
@@ -30,14 +60,49 @@
   top: 0;
   right: 0;
   width: 250px;
-
   height: 100vh;
   padding: 1rem;
-
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   background-color: #442c033b;
   border-left: 2px solid #ddd;
+  z-index: 2000;
+}
+
+.golden-cookie {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  z-index: 1000;
+  filter: drop-shadow(0 0 15px gold);
+  animation: fadeIn 0.5s ease-out;
+  transition: opacity 0.5s ease-out;
+}
+
+.golden-cookie.fade-out {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.cookie-count {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.passive-gain {
+  color: #ffa500;
+  font-size: 1.2rem;
 }

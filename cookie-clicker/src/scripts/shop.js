@@ -1,40 +1,54 @@
 import { Cursor } from "./cursor.js";
+import { Charmander } from "./charmander.js";
+import { WizardTower } from "./wizard-tower.js";
 
 export class Shop {
   gameElement = null;
   cursor = null;
-    
+  charmander = null;
+  wizardTower = null;
+  onPurchase = null;
+  shopElement = null;
 
-  constructor(gameElement, cursor) {
+  constructor(gameElement, config, onPurchase) {
     this.gameElement = gameElement;
-    this.cursor = new Cursor(cursor);
+    this.cursor = new Cursor(config.nbCursors);
+    this.charmander = new Charmander(config.nbCharmanders);
+    this.wizardTower = new WizardTower(config.nbWizardTowers);
+    this.onPurchase = onPurchase;
   }
 
   render() {
-    // On crée un nouvel élément du DOM.
     this.shopElement = document.createElement("section");
     this.shopElement.id = "game-shop";
-    // On modifie son HTML.
-    this.shopElement.innerHTML = `
-        <h2>Shop</h2>
-        <div class="shop-item">
-        ${this.cursor.render()}
-        </div>
-    `;
+    this.updateShopHTML();
 
     this.shopElement.addEventListener("click", (event) => {
       if (event.target.id === "buy-cursor") {
-        console.log(this.gameElement.cookies, this.cursor.price());
-        if (this.gameElement.cookies < this.cursor.price()) {
-            alert("Not enough cookies!");  
-        } else {
-            alert("Cursor bought!");
-            this.cursor.nbcursor += 1;
+        if (this.onPurchase(this.cursor.price(), 0.1, "nbCursors")) {
+          this.cursor.nbcursor += 1;
+        }
+      } else if (event.target.id === "buy-charmander") {
+        if (this.onPurchase(this.charmander.price(), 1, "nbCharmanders")) {
+          this.charmander.nb += 1;
+        }
+      } else if (event.target.id === "buy-wizard-tower") {
+        if (this.onPurchase(this.wizardTower.price(), 10, "nbWizardTowers")) {
+          this.wizardTower.nb += 1;
         }
       }
-    // Il faut ajouter l'élément au DOM pour pouvoir le voir
-  });
+      this.updateShopHTML();
+    });
 
     this.gameElement.append(this.shopElement);
+  }
+
+  updateShopHTML() {
+    this.shopElement.innerHTML = `
+        <h2>Boutique</h2>
+        ${this.cursor.render()}
+        ${this.charmander.render()}
+        ${this.wizardTower.render()}
+    `;
   }
 }

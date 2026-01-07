@@ -1,0 +1,23 @@
+<div class="chat-container">
+  <header>
+    <h1>Gemini AI</h1>
+    <span class="badge">Messages: {{ messageCount() }}</span>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="error-banner">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <app-message-list [messages]="messages()"></app-message-list>
+
+  @if (isLoading()) {
+    <div class="loading-indicator">
+      <div class="spinner"></div>
+      <span>Gemini est en train d'écrire...</span>
+    </div>
+  }
+
+  <app-message-input (sendMessage)="onSendMessage($event)"></app-message-input>
+</div>
